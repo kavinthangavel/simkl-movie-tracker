@@ -2,10 +2,10 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.7%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Platform](https://img.shields.io/badge/platform-windows-blue.svg)](https://www.microsoft.com/windows)
+[![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-blue.svg)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-A powerful Windows-based automatic scrobbler for [Simkl](https://simkl.com) that seamlessly tracks your movie watching progress across multiple media players. Zero configuration required - it just works!
+A powerful cross-platform automatic scrobbler for [Simkl](https://simkl.com) that seamlessly tracks your movie watching progress across multiple media players. Zero configuration required - it just works!
 
 <div align="center">
   <img src="https://eu.simkl.in/img_blog_2012/logo.png" alt="Simkl Logo" width="200"/>
@@ -15,6 +15,13 @@ A powerful Windows-based automatic scrobbler for [Simkl](https://simkl.com) that
 
 ## ⚡ Quick Start
 
+### Option 1: Download Pre-built Executable
+1. Download the appropriate executable for your platform from the [Releases](https://github.com/kavinthangavel/simkl-movie-tracker/releases) page
+2. Run the executable - on first run, you'll be guided through the setup process
+3. The application will appear in your system tray
+
+### Option 2: Run from Source
+
 ```bash
 # Clone repository
 git clone https://github.com/kavinthangavel/simkl-movie-tracker.git
@@ -23,17 +30,14 @@ cd simkl-movie-tracker
 # Install dependencies
 pip install -r requirements.txt
 
-# Set up your Simkl credentials in .env file
-cp .env.example .env
-# Edit .env with your credentials
-
-# Run in system tray mode (Windows)
-pythonw tray_app.py
+# Run the application
+python simkl_movie_tracker.py
 ```
 
 ## 🚀 Features
 
-- **Zero Configuration** - Works with most Windows media players out of the box
+- **Cross-Platform** - Works on Windows, macOS, and Linux
+- **Zero Configuration** - Works with most media players out of the box
 - **Smart Detection** - Intelligent movie recognition using guessit library
 - **Background Operation** - Silent system tray interface with status notifications
 - **Progress Tracking** - Monitors viewing progress across sessions
@@ -44,140 +48,126 @@ pythonw tray_app.py
 
 ## 🎥 Supported Media Players
 
-The following media players are supported on Windows:
+The application automatically detects media playback in supported players:
 
-| Media Player | Support Status |
-|-------------|----------------|
-| VLC Media Player | ✅ Fully Supported |
-| MPC-HC/BE | ✅ Fully Supported |
-| Windows Media Player | ✅ Fully Supported |
-| MPV Player | ✅ Fully Supported |
-| PotPlayer | ✅ Fully Supported |
-| SMPlayer | ✅ Fully Supported |
-| KMPlayer | ✅ Fully Supported |
-| GOM Player | ✅ Fully Supported |
+### Windows
+- VLC Media Player
+- MPC-HC/BE
+- Windows Media Player
+- MPV Player
+- PotPlayer
+- SMPlayer
+- KMPlayer
+- GOM Player
 
-The scrobbler monitors the window titles of these players to detect media files currently being played.
+### macOS
+- VLC
+- IINA
+- QuickTime Player
+- MPV
+- MPlayerX
+
+### Linux
+- VLC
+- MPV
+- SMPlayer
+- Totem
+- Kaffeine
+- Parole
 
 ## 🛠️ Setup Guide
 
 ### System Requirements
 
-- Windows 7/8/10/11
-- Python 3.7 or higher
+- Windows 7/8/10/11, macOS 10.13+, or Linux with desktop environment
+- Python 3.7 or higher (only if running from source)
 - Simkl account and API credentials
 
-### Required Dependencies
+### First-Run Setup
 
-```txt
-requests>=2.25.0
-pygetwindow      # For Windows window detection
-pywin32>=300     # For Windows API integration
-guessit         # For intelligent movie name parsing
-python-dotenv   # For configuration
-psutil          # For process monitoring
-PySimpleGUIQt   # For system tray interface
-```
-
-### Detailed Installation
-
-1. **Get Simkl API Credentials:**
+1. **Create a Simkl account and get API credentials**:
    - Create a [Simkl](https://simkl.com) account
    - Go to [Settings > Developer](https://simkl.com/settings/dev)
-   - Create new client to get your Client ID
-   - First run will guide you through access token generation
-
-2. **Configure Environment:**
-   ```bash
-   # Copy example environment file
-   cp .env.example .env
+   - Create a new client to get your Client ID
    
-   # Add your credentials to .env:
-   SIMKL_CLIENT_ID=your_client_id
-   SIMKL_ACCESS_TOKEN=your_access_token
-   ```
-
-3. **Run the Application:**
-   ```bash
-   # Console mode (for testing)
-   python main.py
+2. **Run the application for the first time**:
+   - You'll be prompted to enter your Simkl Client ID
+   - The application will guide you through the authentication process
+   - After authentication, the app will minimize to your system tray
    
-   # System tray mode (recommended)
-   pythonw tray_app.py  # Runs without console window
-   ```
-
-### Auto-Start Setup
-
-To have the tracker start automatically with Windows:
-
-1. Press `Win+R` and type `shell:startup`
-2. Create a shortcut with these properties:
-   ```
-   Target: pythonw.exe "path\to\tray_app.py"
-   Start in: path\to\simkl-movie-tracker
-   ```
+3. **Configure startup options**:
+   - The app will ask if you want it to run at startup
+   - You can change this later from the tray icon menu
 
 ## 🎮 Usage
 
-The tracker runs silently in your system tray, automatically detecting and tracking movie playback in supported media players. For testing:
+Once set up, the application runs silently in your system tray:
+
+- **Right-click the tray icon** to access the menu
+- The app automatically detects when you're watching movies
+- Movies are marked as watched after reaching 80% completion
+- You can view currently tracked media and progress from the tray menu
+
+### Command Line Options
 
 ```bash
-# Test with specific movie
-python test_movie_completion.py -t "Movie Title"
+# Run normally with system tray icon
+python simkl_movie_tracker.py
 
-# Monitor log file
-type simkl_tracker.log
+# Run in terminal mode without tray icon
+python simkl_movie_tracker.py --headless
+
+# Enable detailed logging
+python simkl_movie_tracker.py --debug
+
+# Run a movie completion test
+python simkl_movie_tracker.py --test
 ```
 
-## ⚙️ Advanced Configuration
+## 🔧 Building the Application
 
-Key settings in `media_tracker.py`:
-```python
-DEFAULT_POLL_INTERVAL = 10  # Player check interval (seconds)
-COMPLETION_THRESHOLD = 0.80  # Mark as watched threshold
-VIDEO_EXTENSIONS = ['.mp4', '.mkv', '.avi', ...]
+To create a standalone executable:
+
+```bash
+# Install build dependencies
+pip install pyinstaller
+
+# Build for your current platform
+python build_app.py
 ```
 
-## 🔍 How It Works
+This creates an executable in the `dist` directory that can run without Python installed.
 
-```mermaid
-graph LR
-    A[Monitor Windows] --> B[Detect Player]
-    B --> C[Extract Filename]
-    C --> D[Parse with guessit]
-    D --> E[Match Movie]
-    E --> F[Track Progress]
-    F --> G{>80% Complete?}
-    G -->|Yes| H[Mark Watched]
-    G -->|No| F
-```
+## 📋 How It Works
 
-1. **Window Detection**: Uses Windows API to monitor active windows for supported media players
-2. **Title Extraction**: Parses window title for filename/movie info
-3. **Smart Parsing**: Uses guessit library to intelligently extract movie title and year
-4. **Movie Matching**: Queries Simkl API to identify the movie
-5. **Progress Tracking**: Monitors playback position
-6. **Auto-marking**: Updates Simkl when 80% threshold reached
+The app works by:
 
-## 🔧 Troubleshooting
+1. Monitoring active windows on your system
+2. Detecting media player windows and extracting the movie title
+3. Matching the title with Simkl's database
+4. Tracking playback progress
+5. Marking movies as watched when you've viewed 80%
 
-### Common Issues
+All of this happens automatically in the background with minimal resource usage.
+
+## 🔍 Troubleshooting
 
 | Issue | Solution |
 |-------|----------|
-| Movie not detected | Ensure media player shows filename in window title |
-| No auto-marking | Check `simkl_tracker.log` for API errors |
-| Incorrect movie | Include year in filename: "Movie (2023).mp4" |
-| Tray icon missing | Run `pip install PySimpleGUIQt --upgrade` |
-| Player not detected | Verify player is in supported list |
-| Windows permission error | Run as administrator |
-| Movie title parsing failed | Use standard naming: "Movie.Name.2023.mp4" |
+| Movie not detected | Ensure media player displays the filename in its window title |
+| Authentication fails | Double-check your Client ID and try again |
+| Incorrect movie match | Include the year in filename: "Movie (2023).mp4" |
+| Tray icon not visible | Check system tray settings or try `--headless` mode |
+| App crashes on startup | Check log file for errors (see status menu for location) |
+| Window detection issues | Some desktop environments may require additional permissions |
 
-### Debug Mode
-```bash
-# Enable debug logging
-python main.py --debug
-```
+## 📝 Development Notes
+
+This project uses:
+- `platformdirs` for cross-platform file management
+- `pystray` for system tray functionality
+- `guessit` for intelligent movie title parsing
+- Platform-specific modules for window detection
 
 ## 📄 License
 
@@ -188,23 +178,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Simkl](https://simkl.com) for their excellent API
 - [iamkroot's Trakt Scrobbler](https://github.com/iamkroot/trakt-scrobbler/) for inspiration
 - [guessit](https://github.com/guessit-io/guessit) for powerful video filename parsing
-- PySimpleGUIQt for the system tray interface
-<!-- - All [contributors](https://github.com/kavinthangavel/simkl-movie-tracker/graphs/contributors) -->
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
-
-## 📝 Todo
-
-- [ ] Add Linux support
-- [ ] Add macOS support
-- [ ] Create native Windows installer
-- [ ] Add GUI for configuration
-- [ ] Create automated tests
+- [pystray](https://github.com/moses-palmer/pystray) for cross-platform system tray support
